@@ -1,0 +1,13 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+#webcam-container {
+    text-align: center;
+}
+
+.webcam-container {
+    width: 100vw;
+    max-height: 100%;
+}
