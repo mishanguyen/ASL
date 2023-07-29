@@ -4,11 +4,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="styles.css">
-  <title>Teachable Machine Image Model</title>
+  <link rel="stylesheet" href="./webfontkit-20230729-154137/stylesheet.css">
+  <title>GDSC ASL Game</title>
 </head>
 <body>
-    <div>Teachable Machine Image Model</div>
-    <button type="button" onclick="init()">Start</button>
+    <header>
+        <div id="title">ASL Game</div>
+        <button type="button" onclick="init()" id="start-btn">Start</button>
+        <div class="info" id="info">
+            <div id="timer-container">
+                <p class="textInfo">Time remaining:</p>
+                <div id="timer">0:30</div>
+            </div>
+            <div id="letters-container">
+                <div id="letters">A B C D E F G</div>
+            </div>
+            <div id="correct-container">
+                <p class="textInfo">Words guessed:</p>
+                <div id="correct">2/7</div>
+            </div>
+        </div>
+    </header>
+    
     <div id="webcam-container" class="webcam-container"></div>
     <div id="label-container"></div>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>

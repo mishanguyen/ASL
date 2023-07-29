@@ -1,35 +1,63 @@
-// More API functions here:
-// https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
+// The rest of your existing code...
 
-// the link to your model provided by Teachable Machine export panel
 const URL = "./";
+const TIMER_DURATION = 30;
 
 let model, webcam, labelContainer, maxPredictions;
+let countdown = TIMER_DURATION;
+let timerId;
 
-// Load the image model and setup the webcam
 async function init() {
+    const title = document.getElementById("title");
+    title.style.display = "none";
+    const hideButton = document.getElementById("start-btn");
+    hideButton.style.display = "none";
+    
     const modelURL = URL + "model.json";
     const metadataURL = URL + "metadata.json";
 
-    // load the model and metadata
-    // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
-    // or files from your local hard drive
-    // Note: the pose library adds "tmImage" object to your window (window.tmImage)
+    // Load the model and metadata
     model = await tmImage.load(modelURL, metadataURL);
     maxPredictions = model.getTotalClasses();
- 
-    // Convenience function to setup a webcam
-    const flip = true; // whether to flip the webcam
-    webcam = new tmImage.Webcam(600, 600, flip); // width, height, flip
-    await webcam.setup(); // request access to the webcam
+    
+    // Setup webcam
+    const flip = true; // Whether to flip the webcam
+    webcam = new tmImage.Webcam(500, 500, flip); // Width, height, flip
+    await webcam.setup(); // Request access to the webcam
     await webcam.play();
     window.requestAnimationFrame(loop);
-
-    // append elements to the DOM
+    // Append elements to the DOM
     document.getElementById("webcam-container").appendChild(webcam.canvas);
     labelContainer = document.getElementById("label-container");
     for (let i = 0; i < maxPredictions; i++) { // and class labels
         labelContainer.appendChild(document.createElement("div"));
+    }
+    const info = document.getElementById("info");
+    info.style.display = "flex";
+    startTimer();
+}
+function startTimer() {
+    countdown = TIMER_DURATION;
+    timerId = setInterval(updateTimer, 1000); // Update the timer every second
+}
+
+function updateTimer() {
+    countdown--;
+    if (countdown <= 0) {
+        clearInterval(timerId); // Stop the timer
+        labelContainer.innerHTML = "Time's up!"; // Display the message
+    }
+    displayTime();
+}
+
+function displayTime() {
+    const timerContainer = document.getElementById("timer");
+    timerContainer.style.color = "#32A432";
+    const minutes = Math.floor(countdown / 60);
+    const seconds = countdown % 60;
+    timerContainer.innerHTML = minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+    if (seconds === 0) {
+        timerContainer.style.color = "red";
     }
 }
 
@@ -41,11 +69,26 @@ async function loop() {
 
 // run the webcam image through the image model
 async function predict() {
-    // predict can take in an image, video or canvas html element
-    const prediction = await model.predict(webcam.canvas);
-    for (let i = 0; i < maxPredictions; i++) {
-        const classPrediction =
-            prediction[i].className + ": " + prediction[i].probability.toFixed(2);
-        labelContainer.childNodes[i].innerHTML = classPrediction;
+    if (countdown <= 0) {
+        clearInterval(timerId); // Stop the timer
+        labelContainer.innerHTML = "Time's up!"; // Display the message
     }
+    // predict can take in an image, video, or canvas HTML element
+    const prediction = await model.predict(webcam.canvas);
+
+    // Find the class with the highest probability
+    let maxProbability = 0;
+    let maxPredictionIndex = 0;
+    for (let i = 0; i < maxPredictions; i++) {
+        const probability = prediction[i].probability;
+        if (probability > maxProbability) {
+            maxProbability = probability;
+            maxPredictionIndex = i;
+        }
+    }
+
+    // Display only the maximum prediction
+    const maxPrediction = prediction[maxPredictionIndex];
+    const classPrediction = "Letter: " + maxPrediction.className;
+    labelContainer.innerHTML = classPrediction;
 }

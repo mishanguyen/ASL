@@ -1,4 +1,5 @@
 * {
+    font-family: 'product_sansregular';
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -7,7 +8,64 @@
     text-align: center;
 }
 
-.webcam-container {
-    width: 100vw;
-    max-height: 100%;
+#label-container {
+    text-align: center;
+    font-size: 20px;
+}
+
+header {
+    margin-top: 2%;
+    text-align: center;
+}
+
+#start-btn {
+    padding: 0.75rem 2.5rem;
+    font-size: 20px;
+    border-radius: 5px;
+    border: none;
+    background-color:antiquewhite;
+}
+#start-btn:hover {
+    opacity: 0.7;
+}
+
+#title {
+    font-family: 'product_sansbold';
+    font-size: 42px;
+    text-align: center;
+}
+
+.info {
+    margin: 1rem 10rem 1rem;
+    display: flex;
+    padding: 0rem 2rem;
+    justify-content: center;
+    border-radius: 7px;
+    display: none;
+}
+
+#timer-container, #letters-container, #correct-container {
+    padding: 1rem 1rem;
+    border: 3px solid black;
+    border-radius: 10px;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+#timer {
+    color: #32A432;
+}
+
+#timer, #correct, #letters {
+    font-size: 40px;
+}
+
+#textInfo {
+    color: black;
+    font-size: 10px;
 }
