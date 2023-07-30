@@ -6,13 +6,26 @@ const TIMER_DURATION = 30;
 let model, webcam, labelContainer, maxPredictions;
 let countdown = TIMER_DURATION;
 let timerId;
+const words = [   ['A', 'B', 'C'],
+                ['A', 'C', 'B'],
+                ['B', 'A', 'C'],
+                ['B', 'C', 'A'],
+                ['C', 'A', 'B'],
+                ['C', 'B', 'A']
+            ]
+
+const randInd = Math.floor(Math.random() * words.length);
+const word = words[randInd];
 
 async function init() {
+    
     const title = document.getElementById("title");
     title.style.display = "none";
     const hideButton = document.getElementById("start-btn");
     hideButton.style.display = "none";
-    
+
+    displayWord();
+
     const modelURL = URL + "model.json";
     const metadataURL = URL + "metadata.json";
 
@@ -36,6 +49,29 @@ async function init() {
     info.style.display = "flex";
     startTimer();
 }
+
+function displayWord() {
+    let completeWord = "";
+    for (let i = 0; i < word.length; i++) {
+        completeWord += word[i];
+    }
+    const letters = document.getElementById("letters");
+    letters.innerHTML = completeWord;
+    const textContent = letters.textContent.trim();
+
+    // Clear the content of the div element
+    letters.innerHTML = '';
+
+    // Wrap each letter in a <span> element and apply styles
+    for (let i = 0; i < textContent.length; i++) {
+        const letter = textContent[i];
+        const spanElement = document.createElement('span');
+        spanElement.textContent = letter;
+        // spanElement.style.color = "green";
+        letters.appendChild(spanElement);
+    }
+}
+
 function startTimer() {
     countdown = TIMER_DURATION;
     timerId = setInterval(updateTimer, 1000); // Update the timer every second
@@ -86,9 +122,33 @@ async function predict() {
             maxPredictionIndex = i;
         }
     }
-
     // Display only the maximum prediction
     const maxPrediction = prediction[maxPredictionIndex];
     const classPrediction = "Letter: " + maxPrediction.className;
     labelContainer.innerHTML = classPrediction;
+    const letters = document.getElementById("letters");
+    const spans = letters.getElementsByTagName("span");
+    // for (let i = 0; i < spans.length; i++) {
+    //     if (maxPrediction.className === spans[i].textContent) {
+    //         if (spans[i].style.color !== "green") {
+    //             spans[i].style.color = "green";
+    //             break;
+    //         };
+    //     }
+    // }
+    
+    if (maxPrediction.className === getCurrentLetter().textContent) {
+        getCurrentLetter().style.color = "green";
+    }
+
+}
+
+function getCurrentLetter() {
+    const letters = document.getElementById("letters");
+    const spans = letters.getElementsByTagName("span");
+    for (let i = 0; i < spans.length; i++) {
+        if (spans[i].style.color !== "green") {
+            return spans[i];
+        }
+    }
 }

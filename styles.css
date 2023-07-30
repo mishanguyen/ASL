@@ -4,6 +4,7 @@
     margin: 0;
     padding: 0;
 }
+
 #webcam-container {
     text-align: center;
 }
@@ -40,6 +41,8 @@ header {
     font-family: 'product_sansbold';
     font-size: 42px;
     text-align: center;
+    margin-bottom: 30px;
+    margin-top: 20%;
 }
 
 .info {
@@ -71,7 +74,12 @@ header {
 }
 
 #timer {
-    color: #32A432;
+    color: #189D02;
+}
+
+#letters {
+    letter-spacing: 10px;
+    margin-right: -10px;
 }
 
 #timer, #correct, #letters {
