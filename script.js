@@ -14,8 +14,10 @@ const words = [   ['A', 'B', 'C'],
                 ['C', 'B', 'A']
             ]
 
-const randInd = Math.floor(Math.random() * words.length);
-const word = words[randInd];
+// const randInd = Math.floor(Math.random() * words.length);
+// const word = words[randInd];
+let currentLetterIndex = 0;
+let correctCounter = 0;
 
 async function init() {
     
@@ -51,6 +53,8 @@ async function init() {
 }
 
 function displayWord() {
+    const randInd = Math.floor(Math.random() * words.length);
+    const word = words[randInd];
     let completeWord = "";
     for (let i = 0; i < word.length; i++) {
         completeWord += word[i];
@@ -67,7 +71,6 @@ function displayWord() {
         const letter = textContent[i];
         const spanElement = document.createElement('span');
         spanElement.textContent = letter;
-        // spanElement.style.color = "green";
         letters.appendChild(spanElement);
     }
 }
@@ -79,7 +82,7 @@ function startTimer() {
 
 function updateTimer() {
     countdown--;
-    if (countdown <= 0) {
+    if (countdown <= 0 || correctCounter === 5) {
         clearInterval(timerId); // Stop the timer
         labelContainer.innerHTML = "Time's up!"; // Display the message
     }
@@ -126,19 +129,33 @@ async function predict() {
     const maxPrediction = prediction[maxPredictionIndex];
     const classPrediction = "Letter: " + maxPrediction.className;
     labelContainer.innerHTML = classPrediction;
+    
     const letters = document.getElementById("letters");
     const spans = letters.getElementsByTagName("span");
-    // for (let i = 0; i < spans.length; i++) {
-    //     if (maxPrediction.className === spans[i].textContent) {
-    //         if (spans[i].style.color !== "green") {
-    //             spans[i].style.color = "green";
-    //             break;
-    //         };
-    //     }
-    // }
-    
-    if (maxPrediction.className === getCurrentLetter().textContent) {
-        getCurrentLetter().style.color = "green";
+    let allGreen = false;
+    if (currentLetterIndex < spans.length && correctCounter !== 5) {
+        const currentLetterText = spans[currentLetterIndex].textContent;
+        if (maxPrediction.className === currentLetterText) {
+            spans[currentLetterIndex].style.color = "#189D02";
+            if (currentLetterIndex == spans.length - 1) {
+                allGreen = true;
+            }
+            currentLetterIndex++;
+        }
+    }
+    if (allGreen && correctCounter !== 5) {
+        // Increment the counter and generate a new word
+        correctCounter++;
+        document.getElementById("correct").textContent = correctCounter + "/5";
+
+        // Generate a new word and reset the currentLetterIndex
+        displayWord();
+        currentLetterIndex = 0;
+    }
+
+    if (correctCounter === 5) {
+        document.getElementById("correct").style.color = "#189D02";
+
     }
 
 }
@@ -151,4 +168,5 @@ function getCurrentLetter() {
             return spans[i];
         }
     }
+    return null;
 }
