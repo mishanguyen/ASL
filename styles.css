@@ -7,6 +7,13 @@
 #webcam-container {
     text-align: center;
 }
+#webcam-container > canvas {
+    border-radius: 17px;
+    text-align: center;
+}
+#canvas {
+    border-radius: 7px;
+}
 
 #label-container {
     text-align: center;
@@ -21,7 +28,7 @@ header {
 #start-btn {
     padding: 0.75rem 2.5rem;
     font-size: 20px;
-    border-radius: 5px;
+    border-radius: 7px;
     border: none;
     background-color:antiquewhite;
 }
@@ -36,25 +43,31 @@ header {
 }
 
 .info {
-    margin: 1rem 10rem 1rem;
-    display: flex;
-    padding: 0rem 2rem;
+    margin-top: 16px;
+    margin-bottom: 16px;
     justify-content: center;
     border-radius: 7px;
     display: none;
+    text-align: center;
 }
 
 #timer-container, #letters-container, #correct-container {
-    padding: 1rem 1rem;
-    border: 3px solid black;
-    border-radius: 10px;
-    margin-left: 1rem;
-    margin-right: 1rem;
+    width: 175px;
+    padding: 16px;
+    border: 3px solid #EAEAEA;
+    border-radius: 17px;
+    margin-left: 16px;
+    margin-right: 16px;
     justify-content: center;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
     align-items: center;
+    background-color: #EAEAEA;
+}
+
+#letters-container {
+    width: 500px;
 }
 
 #timer {
@@ -62,7 +75,8 @@ header {
 }
 
 #timer, #correct, #letters {
-    font-size: 40px;
+    font-size: 60px;
+    font-weight: 1000;
 }
 
 #textInfo {

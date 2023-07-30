@@ -56,7 +56,7 @@ function displayTime() {
     const minutes = Math.floor(countdown / 60);
     const seconds = countdown % 60;
     timerContainer.innerHTML = minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
-    if (seconds === 0) {
+    if (seconds < 10) {
         timerContainer.style.color = "red";
     }
 }
