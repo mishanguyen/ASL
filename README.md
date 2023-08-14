@@ -1,5 +1,5 @@
-# ASL
-Project for tabling event for GDSC
+# ASL Word Guesser
+Project for a tabling event for GDSC. Uses Google's teachable machine to recognize ASL letters.
 
 To run:
 
